@@ -1,10 +1,3 @@
-//
-//  OptionsVC.swift
-//  DecorARound
-//
-//  Created by Doğukan Ahi on 14.12.2024.
-//
-
 import UIKit
 
 class OptionsVC: UIViewController {
