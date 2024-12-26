@@ -15,19 +15,19 @@ class SearchVC: UIViewController {
         self.fetchData()
         
     }
-
+    
     private func fetchData() {
         data = categoryService.fetchCategories()
         categoryTableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            if segue.identifier == "toProductsVC",
-               let destinationVC = segue.destination as? ProductsVC,
-               let category = selectedCategory {
-                destinationVC.category = category
-            }
+        if segue.identifier == "toProductsVC",
+           let destinationVC = segue.destination as? ProductsVC,
+           let category = selectedCategory {
+            destinationVC.category = category
         }
+    }
 }
 
 extension SearchVC: UITableViewDataSource, UITableViewDelegate {
@@ -55,26 +55,26 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-            let headerView = UIView()
-            headerView.backgroundColor = UIColor.white
-
-            let titleLabel = UILabel()
-            titleLabel.text = "Categories"
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.white
+        
+        let titleLabel = UILabel()
+        titleLabel.text = "Categories"
         titleLabel.textColor = UIColor.systemBlue
         titleLabel.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-            titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-            headerView.addSubview(titleLabel)
-            NSLayoutConstraint.activate([
-                titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
-                titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-                titleLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 1),
-            ])
-
-            return headerView
-        }
-
-        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 50 // Özelleştirilmiş başlık yüksekliği
-        }
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        headerView.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 10),
+            titleLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            titleLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 1),
+        ])
+        
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50 // Özelleştirilmiş başlık yüksekliği
+    }
 }

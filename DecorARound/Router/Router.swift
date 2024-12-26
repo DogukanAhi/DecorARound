@@ -1,9 +1,10 @@
 import UIKit
 
 struct Router {
-    struct Segue {
-        static func performSegue(from viewController: UIViewController, to identifier: String, sender: Any?) {
-            viewController.performSegue(withIdentifier: identifier, sender: sender)
-        }
+    static func makeAlert (titleInput: String, messageInput: String,viewController: UIViewController) {
+        let alert = UIAlertController(title: titleInput, message: messageInput, preferredStyle: .alert)
+        let okButton = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okButton)
+        viewController.present(alert,animated: true)
     }
 }

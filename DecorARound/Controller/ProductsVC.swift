@@ -1,4 +1,3 @@
-
 import UIKit
 
 class ProductsVC: UIViewController {
@@ -8,8 +7,5 @@ class ProductsVC: UIViewController {
         if let category = category {
             print(category.title)
         }
-            
-            
     }
-    
 }
