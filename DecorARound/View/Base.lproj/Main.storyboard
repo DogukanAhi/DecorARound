@@ -46,7 +46,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="qH7-AF-k2r">
-                                                            <rect key="frame" x="93" y="258" width="192" height="26"/>
+                                                            <rect key="frame" x="93" y="258.33333333333331" width="192" height="25.666666666666686"/>
                                                         </pageControl>
                                                     </subviews>
                                                     <constraints>
