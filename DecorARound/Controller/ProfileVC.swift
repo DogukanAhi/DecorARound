@@ -16,6 +16,26 @@ class ProfileVC: UIViewController {
         setupNavigationBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        showLoginVC()
+    }
+    
+    private func showLoginVC() {
+        if Auth.auth().currentUser == nil {
+            let storyboard = UIStoryboard(name: "Profile", bundle: nil)
+            if let loginVC = storyboard.instantiateViewController(withIdentifier: "LoginVC") as? LoginVC {
+                guard let navigationController = self.navigationController else {
+                                print("Error: ProfileVC is not embedded in a Navigation Controller")
+                                return
+                            }
+                self.navigationController?.pushViewController(loginVC, animated: true)
+            }
+        }
+        
+    }
+    
+    
     private func setupNavigationBar() {
         let navigationBar = UINavigationBar(frame: CGRect(x: 0, y: 50, width: view.frame.width, height: 44))
         view.addSubview(navigationBar)
@@ -58,5 +78,16 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0 && indexPath.row == 3 {
+            do {
+                try Auth.auth().signOut()
+                
+            } catch let signOutError as NSError{
+                print("Error signing out: \(signOutError)")
+            }
+        }
     }
 }

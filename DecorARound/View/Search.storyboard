@@ -6,6 +6,7 @@
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -97,8 +98,53 @@
                     <view key="view" contentMode="scaleToFill" id="kWC-mJ-OG2">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="x5U-lJ-rJ4">
+                                <rect key="frame" x="0.0" y="103" width="393" height="666"/>
+                            </stackView>
+                            <searchBar contentMode="redraw" placeholder="Search for Items" translatesAutoresizingMaskIntoConstraints="NO" id="aXn-TM-wVA">
+                                <rect key="frame" x="0.0" y="103" width="393" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="Umw-0w-vii" id="0ci-M0-nuw"/>
+                                </connections>
+                            </searchBar>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="P53-ZF-Pff">
+                                <rect key="frame" x="-1" y="159" width="394" height="610"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="iS8-hI-NQX">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="LLa-1a-aOO">
+                                        <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="HoD-Kp-51j">
+                                            <rect key="frame" x="0.0" y="0.0" width="128" height="128"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </collectionViewCellContentView>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="XyU-GP-fqY"/>
                         <color key="backgroundColor" red="0.1450980392" green="0.58823529409999997" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="XyU-GP-fqY" firstAttribute="trailing" secondItem="P53-ZF-Pff" secondAttribute="trailing" id="0Zz-s4-TMR"/>
+                            <constraint firstItem="XyU-GP-fqY" firstAttribute="trailing" secondItem="x5U-lJ-rJ4" secondAttribute="trailing" id="3yA-mu-CHd"/>
+                            <constraint firstItem="x5U-lJ-rJ4" firstAttribute="leading" secondItem="XyU-GP-fqY" secondAttribute="leading" id="INO-yw-d2W"/>
+                            <constraint firstItem="aXn-TM-wVA" firstAttribute="trailing" secondItem="XyU-GP-fqY" secondAttribute="trailing" id="Nyn-Bd-46y"/>
+                            <constraint firstItem="aXn-TM-wVA" firstAttribute="top" secondItem="XyU-GP-fqY" secondAttribute="top" id="Vef-dU-vFa"/>
+                            <constraint firstItem="P53-ZF-Pff" firstAttribute="leading" secondItem="XyU-GP-fqY" secondAttribute="leading" constant="-1" id="bK6-KA-Hfa"/>
+                            <constraint firstItem="aXn-TM-wVA" firstAttribute="leading" secondItem="XyU-GP-fqY" secondAttribute="leading" id="bcL-ta-TDH"/>
+                            <constraint firstItem="XyU-GP-fqY" firstAttribute="bottom" secondItem="P53-ZF-Pff" secondAttribute="bottom" id="dbT-Fq-vEJ"/>
+                            <constraint firstItem="XyU-GP-fqY" firstAttribute="bottom" secondItem="x5U-lJ-rJ4" secondAttribute="bottom" id="oBd-nn-2DP"/>
+                            <constraint firstItem="x5U-lJ-rJ4" firstAttribute="top" secondItem="XyU-GP-fqY" secondAttribute="top" id="oXH-xe-goj"/>
+                            <constraint firstItem="P53-ZF-Pff" firstAttribute="top" secondItem="aXn-TM-wVA" secondAttribute="bottom" id="vUo-hf-Yon"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Kcp-C2-Vgh"/>
                 </viewController>

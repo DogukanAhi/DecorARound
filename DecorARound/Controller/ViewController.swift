@@ -1,4 +1,5 @@
 import UIKit
+import FirebaseAuth
 
 class ViewController: UIViewController {
     
@@ -37,7 +38,15 @@ class ViewController: UIViewController {
         let indexPath = IndexPath(item: page, section: 0)
         campaignCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
+    
+    @IBAction func arButtonClicked(_ sender: Any) {
+        
+        self.performSegue(withIdentifier: "toArVC", sender: nil)
+    }
+    
+    
 }
+
 
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

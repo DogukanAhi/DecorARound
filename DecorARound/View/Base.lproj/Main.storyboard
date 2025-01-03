@@ -18,12 +18,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="J8e-cd-wC4">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="J8e-cd-wC4">
                                 <rect key="frame" x="0.0" y="99" width="393" height="670"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aBB-oh-D62">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="335"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="223.33333333333334"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="223.33333333333334" id="A2h-h7-ZON"/>
+                                        </constraints>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="oo9-6b-iBY">
                                             <size key="itemSize" width="380" height="299"/>
                                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -46,7 +49,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="qH7-AF-k2r">
-                                                            <rect key="frame" x="93" y="258.33333333333331" width="192" height="25.666666666666686"/>
+                                                            <rect key="frame" x="93" y="258.33333333333326" width="192" height="25.666666666666686"/>
                                                         </pageControl>
                                                     </subviews>
                                                     <constraints>
@@ -67,8 +70,19 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HAB-NW-DpD">
+                                        <rect key="frame" x="145.66666666666666" y="223.33333333333331" width="102" height="43"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Test AR">
+                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="22"/>
+                                            <color key="baseBackgroundColor" red="0.1450980392" green="0.58823529409999997" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="arButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pWH-tW-ims"/>
+                                        </connections>
+                                    </button>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-PD-Ivt">
-                                        <rect key="frame" x="0.0" y="335" width="393" height="335"/>
+                                        <rect key="frame" x="0.0" y="266.33333333333326" width="393" height="403.66666666666674"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fn7-Qr-9on">
                                             <size key="itemSize" width="128" height="128"/>
@@ -91,6 +105,7 @@
                                 <constraints>
                                     <constraint firstItem="aBB-oh-D62" firstAttribute="leading" secondItem="J8e-cd-wC4" secondAttribute="leading" id="J08-e9-39C"/>
                                     <constraint firstAttribute="trailing" secondItem="aBB-oh-D62" secondAttribute="trailing" id="s6L-g8-EqR"/>
+                                    <constraint firstItem="aBB-oh-D62" firstAttribute="leading" secondItem="e2Q-PD-Ivt" secondAttribute="leading" id="wu9-ho-Rpu"/>
                                 </constraints>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="textlogo" translatesAutoresizingMaskIntoConstraints="NO" id="jIn-53-gQp">
@@ -117,13 +132,45 @@
                     <tabBarItem key="tabBarItem" title="Home" id="dL3-P3-SbS">
                         <imageReference key="image" image="house.fill" catalog="system" symbolScale="medium"/>
                     </tabBarItem>
+                    <navigationItem key="navigationItem" id="NNg-S1-X1J"/>
                     <connections>
                         <outlet property="campaignCollectionView" destination="aBB-oh-D62" id="BkK-be-cgW"/>
+                        <segue destination="c6h-Xn-Z8i" kind="presentation" identifier="toArVC" modalPresentationStyle="fullScreen" id="P3U-SB-Ef3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="962.59541984732823" y="3.5211267605633805"/>
+        </scene>
+        <!--ArVC-->
+        <scene sceneID="0TC-Kv-xvM">
+            <objects>
+                <viewController id="c6h-Xn-Z8i" customClass="ArVC" customModule="DecorARound" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zNl-OF-40j">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P02-ac-YTk">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </arscnView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Oji-a7-Noc"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="P02-ac-YTk" firstAttribute="leading" secondItem="Oji-a7-Noc" secondAttribute="leading" id="Ccg-4W-hIF"/>
+                            <constraint firstItem="P02-ac-YTk" firstAttribute="top" secondItem="Oji-a7-Noc" secondAttribute="top" id="Hyw-Dc-dJ1"/>
+                            <constraint firstItem="Oji-a7-Noc" firstAttribute="trailing" secondItem="P02-ac-YTk" secondAttribute="trailing" id="VZ8-rc-BpD"/>
+                            <constraint firstItem="Oji-a7-Noc" firstAttribute="bottom" secondItem="P02-ac-YTk" secondAttribute="bottom" id="Yn0-g5-hzR"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="sceneView" destination="P02-ac-YTk" id="6b6-6n-RAa"/>
+                        <segue destination="T6A-f7-h4n" kind="presentation" identifier="fromArVCtoHomeVC" modalPresentationStyle="fullScreen" id="GNa-RM-hoz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Sf-69-wi1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1932" y="4"/>
         </scene>
         <!--Options-->
         <scene sceneID="a3j-Ui-C42">

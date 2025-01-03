@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		358C42E32D27C545008E94F7 /* ARKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 358C42E22D27C544008E94F7 /* ARKit.framework */; };
+		358C42E52D27C54D008E94F7 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 358C42E42D27C54D008E94F7 /* SceneKit.framework */; };
 		35EE62722D1C3B38009D6506 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 35EE62712D1C3B38009D6506 /* FirebaseAuth */; };
 		35EE62742D1C3B38009D6506 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 35EE62732D1C3B38009D6506 /* FirebaseDatabase */; };
 		35EE62762D1C3B38009D6506 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 35EE62752D1C3B38009D6506 /* FirebaseFirestore */; };
@@ -35,6 +37,8 @@
 		357B00C12D0C9FED004671F6 /* DecorARound.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DecorARound.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		357B00DA2D0C9FEE004671F6 /* DecorARoundTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DecorARoundTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		357B00E42D0C9FEE004671F6 /* DecorARoundUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DecorARoundUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		358C42E22D27C544008E94F7 /* ARKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ARKit.framework; path = System/Library/Frameworks/ARKit.framework; sourceTree = SDKROOT; };
+		358C42E42D27C54D008E94F7 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -73,8 +77,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				358C42E32D27C545008E94F7 /* ARKit.framework in Frameworks */,
 				35EE62742D1C3B38009D6506 /* FirebaseDatabase in Frameworks */,
 				35EE62782D1C3B38009D6506 /* FirebaseStorage in Frameworks */,
+				358C42E52D27C54D008E94F7 /* SceneKit.framework in Frameworks */,
 				35EE62722D1C3B38009D6506 /* FirebaseAuth in Frameworks */,
 				35EE627B2D1C3B90009D6506 /* FirebaseAnalytics in Frameworks */,
 				35EE62762D1C3B38009D6506 /* FirebaseFirestore in Frameworks */,
@@ -122,6 +128,8 @@
 		35EE62792D1C3B90009D6506 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				358C42E42D27C54D008E94F7 /* SceneKit.framework */,
+				358C42E22D27C544008E94F7 /* ARKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
