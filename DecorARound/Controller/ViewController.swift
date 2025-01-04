@@ -2,7 +2,6 @@ import UIKit
 import FirebaseAuth
 
 class ViewController: UIViewController {
-    
     @IBOutlet weak var campaignCollectionView: UICollectionView!
     
     var campaignImages: [UIImage] = [
@@ -13,23 +12,15 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         campaignCollectionView.delegate = self
         campaignCollectionView.dataSource = self
-        
-        // Sadece yatay kaydırmayı etkinleştirin
         if let layout = campaignCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
-            layout.minimumLineSpacing = 0 // Hücreler arasında boşluk bırakma
+            layout.minimumLineSpacing = 0
         }
-        
-        campaignCollectionView.showsHorizontalScrollIndicator = false // Kaydırma çubuğunu gizle
-        
-        // Daha yumuşak kaydırma için decelerationRate ayarı
+        campaignCollectionView.showsHorizontalScrollIndicator = false
         campaignCollectionView.decelerationRate = .fast
-        
-        // Collection view yeniden yüklendiğinde page control'ün güncellenmesi
-        campaignCollectionView.isPagingEnabled = true // Hücreleri tam sayfa yaparak kaydırma sağla
+        campaignCollectionView.isPagingEnabled = true
         campaignCollectionView.reloadData()
     }
     
@@ -40,16 +31,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func arButtonClicked(_ sender: Any) {
-        
         self.performSegue(withIdentifier: "toArVC", sender: nil)
     }
-    
-    
 }
-
-
 // MARK: - UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return campaignImages.count
     }
@@ -61,21 +48,17 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        // Hücre boyutunu, collection view'in genişliği ve yüksekliğine tam olarak uyumlu yap
         let width = collectionView.bounds.width
         let height = collectionView.bounds.height
         return CGSize(width: width, height: height)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10 // Hücreler arasındaki boşluğu sıfırla
+        return 10
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // Sayfayı doğru hesaplamak için pageControl'ü güncelleyin
         let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
-        
-        // CampaignCell'lerin her birinde pageControl'ü güncelleyin
         for cell in campaignCollectionView.visibleCells {
             if let campaignCell = cell as? CampaignCell {
                 campaignCell.pageControl.numberOfPages = campaignImages.count

@@ -16,16 +16,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Options" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xoP-C2-zUj">
-                                <rect key="frame" x="119" y="109" width="172" height="88"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Work in Progress ☺️" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yoz-JD-0dE">
+                                <rect key="frame" x="10" y="59" width="373" height="32.333333333333343"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="27"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" red="0.1450980392" green="0.58823529409999997" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="yoz-JD-0dE" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="JRT-yH-rY0"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="yoz-JD-0dE" secondAttribute="trailing" constant="10" id="Jau-3V-FAC"/>
+                            <constraint firstItem="yoz-JD-0dE" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="10" id="aOx-z4-MMr"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Options" id="tIa-Mr-SVt">
                         <imageReference key="image" image="gear" catalog="system" symbolScale="medium"/>

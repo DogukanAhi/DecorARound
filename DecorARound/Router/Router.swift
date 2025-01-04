@@ -8,5 +8,8 @@ struct Router {
         viewController.present(alert,animated: true)
     }
     
-    
+    static func addTapGestureToDismissKeyboard(for view: UIView) {
+          let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing(_:)))
+          view.addGestureRecognizer(tapGesture)
+      }
 }

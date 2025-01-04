@@ -14,6 +14,7 @@ class LoginVC: UIViewController{
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(createAccountLblClicked))
         createAccountLbl.isUserInteractionEnabled = true
         createAccountLbl.addGestureRecognizer(tapGesture)
+        Router.addTapGestureToDismissKeyboard(for: self.view)
     }
     
     

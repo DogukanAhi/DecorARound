@@ -8,7 +8,7 @@ class SignUpVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        Router.addTapGestureToDismissKeyboard(for: self.view)
     }
     
     @IBAction func signUpButtonClicked(_ sender: Any) {
