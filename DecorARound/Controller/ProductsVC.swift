@@ -47,7 +47,7 @@ extension ProductsVC: UICollectionViewDataSource {
         cell.priceLbl.text = String(format: "$%.2f", product.price ?? 0.0)
         cell.productNameLbl.text = product.name
         DispatchQueue.main.async {
-            if let imageUrl = product.imageUrl, let url = URL(string: imageUrl) {
+            if let firstImageUrl = product.imageUrl?.first, let url = URL(string: firstImageUrl) {
                     cell.imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
                 
             } else {
@@ -65,7 +65,7 @@ extension ProductsVC: UICollectionViewDelegate{
         selectedProductDict = [
                     "name": selectedProduct.name ?? "",
                     "price": selectedProduct.price ?? 0.0,
-                    "imageUrl": selectedProduct.imageUrl ?? "",
+                    "imageUrl": selectedProduct.imageUrl ?? [],
                     "description": selectedProduct.description ?? "",
                     "rating": selectedProduct.rating ?? 0.0,
                     "stock": selectedProduct.stock ?? 0

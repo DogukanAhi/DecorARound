@@ -3,6 +3,7 @@ import FirebaseFirestore
 
 struct ProductService {
     private let db = Firestore.firestore()
+    
     func fetchProducts(completion: @escaping ([Product]) -> Void) {
         db.collection("Products").getDocuments { snapshot, error in
             if let error = error {
@@ -10,25 +11,32 @@ struct ProductService {
                 completion([])
                 return
             }
+            
             var products = [Product]()
+            
             for document in snapshot?.documents ?? [] {
                 let data = document.data()
                 let stockData = data["stock"] as? [String: Int] ?? [:]
-                let product = Product(category: data["category"] as? String,
-                                      imageUrl: data["imageUrl"] as? String,
-                                      name: data["name"] as? String,
-                                      price: data["price"] as? Double,
-                                      productId: data["productId"] as? String,
-                                      description: data["description"] as? String,
-                                      rating: data["rating"] as? Double,
-                                      stock: stockData)
-                                        
-                products.append(product)
                 
+                // 📌 `imageUrl` dizisi olarak al, boşsa boş array dön
+                let imageUrls = data["imageUrl"] as? [String] ?? []
+                
+                let product = Product(
+                    category: data["category"] as? String,
+                    imageUrl: imageUrls, // 📌 Artık bir `String` değil, `String Array`
+                    name: data["name"] as? String,
+                    price: data["price"] as? Double,
+                    productId: data["productId"] as? String,
+                    description: data["description"] as? String,
+                    rating: data["rating"] as? Double,
+                    stock: stockData
+                )
+                
+                products.append(product)
             }
-            print("product eklendi!")
+            
+            print("✅ Ürünler başarıyla eklendi!")
             completion(products)
-        
         }
     }
 }
