@@ -70,19 +70,8 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HAB-NW-DpD">
-                                        <rect key="frame" x="145.66666666666666" y="223.33333333333331" width="102" height="60.333333333333314"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="filled" title="Test AR">
-                                            <fontDescription key="titleFontDescription" type="boldSystem" pointSize="22"/>
-                                            <color key="baseBackgroundColor" red="0.1450980392" green="0.58823529409999997" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        </buttonConfiguration>
-                                        <connections>
-                                            <action selector="arButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pWH-tW-ims"/>
-                                        </connections>
-                                    </button>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-PD-Ivt">
-                                        <rect key="frame" x="0.0" y="283.66666666666674" width="393" height="386.33333333333326"/>
+                                        <rect key="frame" x="0.0" y="223.33333333333329" width="393" height="446.66666666666674"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fn7-Qr-9on">
                                             <size key="itemSize" width="128" height="128"/>
@@ -145,7 +134,7 @@
         <!--ArVC-->
         <scene sceneID="0TC-Kv-xvM">
             <objects>
-                <viewController id="c6h-Xn-Z8i" customClass="ArVC" customModule="DecorARound" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ArVC" id="c6h-Xn-Z8i" customClass="ArVC" customModule="DecorARound" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zNl-OF-40j">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

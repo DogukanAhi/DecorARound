@@ -1,5 +1,5 @@
 import UIKit
-
+import Kingfisher
 class ProductsVC: UIViewController {
     var category: Category?
     @IBOutlet weak var productCollectionView: UICollectionView!
@@ -7,6 +7,7 @@ class ProductsVC: UIViewController {
     private var screenSize = UIScreen.main.bounds
     private var products: [Product] = []
     private let productService = ProductService()
+    private var selectedProductDict: [String: Any]?
     
     fileprivate  func prepareCellSize() {
         let width = ((screenSize.width-32)/2) * 0.9
@@ -45,16 +46,44 @@ extension ProductsVC: UICollectionViewDataSource {
         let product = products[indexPath.row]
         cell.priceLbl.text = String(format: "$%.2f", product.price ?? 0.0)
         cell.productNameLbl.text = product.name
-        cell.imageView.image = UIImage(named: "koltuk2")
+        DispatchQueue.main.async {
+            if let imageUrl = product.imageUrl, let url = URL(string: imageUrl) {
+                    cell.imageView.kf.setImage(with: url, placeholder: UIImage(named: "placeholder"))
+                
+            } else {
+                cell.imageView.image = UIImage(systemName: "photo")
+            }
+        }
+       
         return cell
     }
     
 }
 extension ProductsVC: UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("section: \(indexPath.section), item: \(indexPath.item)")
+        let selectedProduct = products[indexPath.row]
+        selectedProductDict = [
+                    "name": selectedProduct.name ?? "",
+                    "price": selectedProduct.price ?? 0.0,
+                    "imageUrl": selectedProduct.imageUrl ?? "",
+                    "description": selectedProduct.description ?? "",
+                    "rating": selectedProduct.rating ?? 0.0,
+                    "stock": selectedProduct.stock ?? 0
+                ]
+        if let istanbulStock = selectedProduct.stock?["Istanbul"] {
+            print("İstanbul Stok: \(istanbulStock)")
+        } else {
+            print("İstanbul için stok bilgisi yok.")
+        }
+        
         self.performSegue(withIdentifier: "toProductDetailVC", sender: nil)
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+           if segue.identifier == "toProductDetailVC",
+              let destinationVC = segue.destination as? ProductDetailVC {
+               destinationVC.productDetails = selectedProductDict
+           }
+       }
 }
 extension ProductsVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

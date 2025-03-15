@@ -70,7 +70,7 @@ class ArVC: UIViewController, ARSCNViewDelegate {
     }
 
     @objc private func goBackTapped() {
-        performSegue(withIdentifier: "fromArVCtoHomeVC", sender: nil)
+        self.dismiss(animated: true)
     }
 
     private func registerGestureRecognizers() {
