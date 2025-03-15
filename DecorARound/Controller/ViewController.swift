@@ -5,9 +5,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var campaignCollectionView: UICollectionView!
     
     var campaignImages: [UIImage] = [
-        UIImage(named: "campaign2")!,
-        UIImage(named: "campaign2")!,
-        UIImage(named: "campaign2")!
+        UIImage(named: "decarcamp1")!,
+        UIImage(named: "decarcamp2")!,
+        UIImage(named: "decarcamp3")!
     ]
     
     override func viewDidLoad() {
