@@ -1,7 +1,9 @@
 import Foundation
 
 struct Product{
-    let title: String
-    let price: String
-    let imageUrl: String
+    let category: String?
+    let imageUrl: String?
+    let name: String?
+    let price: Double?
+    let productId: String?
 }

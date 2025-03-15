@@ -49,6 +49,7 @@ extension SearchVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedCategory = data[indexPath.row]
+        print(selectedCategory?.title ?? "")
         self.performSegue(withIdentifier: "toProductsVC", sender: nil)
         tableView.deselectRow(at: indexPath, animated: true)
         
