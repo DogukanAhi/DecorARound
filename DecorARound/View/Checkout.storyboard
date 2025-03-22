@@ -69,6 +69,17 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4R-Sx-FkO">
+                                                    <rect key="frame" x="306" y="112.33333333333333" width="34" height="30.666666666666671"/>
+                                                    <state key="normal" title="Button"/>
+                                                    <buttonConfiguration key="configuration" style="filled" image="trash.fill" catalog="system">
+                                                        <color key="baseForegroundColor" systemColor="systemRedColor"/>
+                                                        <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </buttonConfiguration>
+                                                    <connections>
+                                                        <action selector="deleteBtnClicked:" destination="Z6g-TS-Nie" eventType="touchUpInside" id="euz-T4-z6m"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="ics-za-fLX" secondAttribute="bottom" constant="72" id="10j-Wq-KO0"/>
@@ -77,13 +88,17 @@
                                                 <constraint firstItem="Swu-g6-MMA" firstAttribute="top" secondItem="cGt-77-Th1" secondAttribute="bottom" constant="18" id="E5k-A2-ktA"/>
                                                 <constraint firstItem="cGt-77-Th1" firstAttribute="leading" secondItem="Swu-g6-MMA" secondAttribute="leading" id="Ey3-W0-i8K"/>
                                                 <constraint firstItem="ics-za-fLX" firstAttribute="leading" secondItem="NFM-mv-e0d" secondAttribute="trailing" constant="28" id="MJH-pi-qh9"/>
+                                                <constraint firstItem="ics-za-fLX" firstAttribute="top" secondItem="z4R-Sx-FkO" secondAttribute="bottom" constant="18.666666666666629" id="UfB-Kv-cK0"/>
                                                 <constraint firstItem="Jh1-PB-f0Q" firstAttribute="top" secondItem="cGt-77-Th1" secondAttribute="top" id="VOU-bq-Y7Z"/>
                                                 <constraint firstItem="Jh1-PB-f0Q" firstAttribute="leading" secondItem="Upm-Ta-c5L" secondAttribute="leadingMargin" id="Zyt-Zp-JhE"/>
+                                                <constraint firstItem="z4R-Sx-FkO" firstAttribute="leading" secondItem="Swu-g6-MMA" secondAttribute="trailing" constant="58" id="cUj-uK-Q7k"/>
                                                 <constraint firstItem="Swu-g6-MMA" firstAttribute="leading" secondItem="NFM-mv-e0d" secondAttribute="leading" id="euJ-QW-ubJ"/>
+                                                <constraint firstItem="z4R-Sx-FkO" firstAttribute="centerY" secondItem="Swu-g6-MMA" secondAttribute="centerY" id="hKE-uW-TW2"/>
                                                 <constraint firstItem="ics-za-fLX" firstAttribute="top" secondItem="cGt-77-Th1" secondAttribute="bottom" constant="63" id="hah-Q8-YA3"/>
                                                 <constraint firstItem="cGt-77-Th1" firstAttribute="leading" secondItem="Jh1-PB-f0Q" secondAttribute="trailing" constant="36" id="mtu-O2-UDr"/>
                                                 <constraint firstAttribute="trailing" secondItem="ics-za-fLX" secondAttribute="trailing" constant="24" id="qPu-cr-aCA"/>
                                                 <constraint firstAttribute="bottom" secondItem="NFM-mv-e0d" secondAttribute="bottom" constant="67" id="qhl-Wu-g5X"/>
+                                                <constraint firstAttribute="trailing" secondItem="z4R-Sx-FkO" secondAttribute="trailing" constant="14" id="rDr-eR-X3J"/>
                                                 <constraint firstItem="Jh1-PB-f0Q" firstAttribute="centerY" secondItem="Swu-g6-MMA" secondAttribute="centerY" id="tmd-W9-5TE"/>
                                                 <constraint firstItem="NFM-mv-e0d" firstAttribute="top" secondItem="Swu-g6-MMA" secondAttribute="bottom" constant="18" id="ty2-bB-hKl"/>
                                                 <constraint firstItem="NFM-mv-e0d" firstAttribute="centerY" secondItem="ics-za-fLX" secondAttribute="centerY" id="vq4-wt-KML"/>
@@ -91,6 +106,7 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="354" height="255"/>
                                         <connections>
+                                            <outlet property="deleteBtn" destination="z4R-Sx-FkO" id="Yem-Nh-7Gx"/>
                                             <outlet property="imageView" destination="Jh1-PB-f0Q" id="wCl-8s-ewk"/>
                                             <outlet property="priceLbl" destination="Swu-g6-MMA" id="CdB-H7-XUD"/>
                                             <outlet property="productNameLbl" destination="cGt-77-Th1" id="MJg-Nb-emL"/>
@@ -163,6 +179,7 @@
                     </tabBarItem>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="checkoutBtn" destination="5WR-PZ-JIC" id="e9S-7E-yHP"/>
                         <outlet property="collectionView" destination="FG6-we-IBp" id="Gca-Rt-7T2"/>
                         <outlet property="totalPriceLbl" destination="76w-Wz-jOu" id="aeI-xK-vcx"/>
                     </connections>
@@ -174,11 +191,15 @@
     </scenes>
     <resources>
         <image name="basket.fill" catalog="system" width="128" height="108"/>
+        <image name="trash.fill" catalog="system" width="117" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

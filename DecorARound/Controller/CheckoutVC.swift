@@ -7,7 +7,9 @@ class CheckoutVC: UIViewController {
     private var totalStock: Int = 0
     var quantities: [String: Int] = [:]
     @IBOutlet weak var totalPriceLbl: UILabel!
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionView:UICollectionView!
+    
+    @IBOutlet weak var checkoutBtn: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,10 +27,12 @@ class CheckoutVC: UIViewController {
             // ✅ Mevcut quantity varsa üstüne ekle
             let currentQty = self.quantities[item.productId] ?? 0
             self.quantities[item.productId] = currentQty + item.quantity
-
+            
             self.fetchAndAppendProduct(productId: item.productId)
         }
         CartManager.shared.pendingProductIds.removeAll()
+        self.updateTotalPrice()
+        
     }
     @objc func handleProductAdded(_ notification: Notification) {
         if let userInfo = notification.userInfo,
@@ -37,23 +41,28 @@ class CheckoutVC: UIViewController {
             let newQty = userInfo["quantity"] as? Int ?? 1
             let currentQty = self.quantities[productId] ?? 0
             self.quantities[productId] = currentQty + newQty  // ✅ toplama burada
-
+            
             productService.fetchProduct(byId: productId) { [weak self] product in
                 guard let self = self, let product = product else { return }
-
+                
                 let totalStock = product.stock?.values.reduce(0, +) ?? 0
                 self.totalStocks[product.productId ?? ""] = totalStock
-
+                
                 if !self.selectedProducts.contains(where: { $0.productId == product.productId }) {
                     self.selectedProducts.append(product)
                 }
-
+                
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
-                    self.updateTotalPrice()
+                    
                 }
+                
             }
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.updateTotalPrice()
     }
     
     func updateTotalPrice() {
@@ -66,10 +75,21 @@ class CheckoutVC: UIViewController {
             
             total += price * Double(quantity)
         }
-        
-        totalPriceLbl.text = String(format: "Total: $%.2f", total)
+        if selectedProducts.isEmpty {
+            
+            self.totalPriceLbl.text = "$0.00"
+            self.checkoutBtn.isEnabled = false
+            self.checkoutBtn.tintColor = .darkGray
+            //      Router.makeAlert(titleInput: "Oops! Nothing Here", messageInput: "Your cart is feeling lonely. Add some cool stuff!", viewController: self)
+        }
+        else {
+            self.checkoutBtn.isEnabled = true
+            self.checkoutBtn.tintColor = .green
+            self.totalPriceLbl.text = String(format: "$%.2f", total)
+        }
     }
-
+    
+    
     
     
     func fetchAndAppendProduct(productId: String) {
@@ -114,7 +134,21 @@ extension CheckoutVC: UICollectionViewDelegate, UICollectionViewDataSource {
             self.quantities[productId] = newQty
             self.updateTotalPrice()
         }
-
+        cell.onDeleteTapped = { [weak self] in
+            guard let self = self else { return }
+            
+            self.selectedProducts.removeAll { $0.productId == productId }
+            self.quantities.removeValue(forKey: productId)
+            self.totalStocks.removeValue(forKey: productId)
+            
+            // 2️⃣ CollectionView güncelle
+            self.collectionView.reloadData()
+            
+            // 3️⃣ Toplam fiyat güncelle
+            self.updateTotalPrice()
+        }
+        
+        
         cell.productNameLbl.text = product.name
         cell.priceLbl.text = String(format: "$%.2f", product.price ?? 0.0)
         cell.qtyLbl.text = "\(quantity)"
