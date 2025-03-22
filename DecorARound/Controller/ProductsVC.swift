@@ -82,12 +82,6 @@ extension ProductsVC: UICollectionViewDelegate{
                     "stock": selectedProduct.stock ?? 0,
                     "productId": selectedProduct.productId ?? ""
                 ]
-        if let istanbulStock = selectedProduct.stock?["Istanbul"] {
-            print("İstanbul Stok: \(istanbulStock)")
-        } else {
-            print("İstanbul için stok bilgisi yok.")
-        }
-        
         self.performSegue(withIdentifier: "toProductDetailVC", sender: nil)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -109,14 +103,14 @@ extension ProductsVC: UISearchBarDelegate {
         if searchText.isEmpty {
             products = allProducts
         } else {
-            let searchChar = searchText.lowercased().prefix(1)
+            let searchLowercased = searchText.lowercased()
             products = allProducts.filter {
-                guard let name = $0.name?.lowercased(), let firstChar = name.first else { return false }
-                return String(firstChar) == searchChar
+                $0.name?.lowercased().contains(searchLowercased) ?? false
             }
         }
         productCollectionView.reloadData()
     }
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
     }

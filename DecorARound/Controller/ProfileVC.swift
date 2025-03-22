@@ -63,7 +63,6 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
         } else {
             return 1
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -109,5 +108,6 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
         default:
             break
         }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

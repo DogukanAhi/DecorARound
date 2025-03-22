@@ -1,5 +1,7 @@
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
+
 class ProductDetailVC: UIViewController {
     
     @IBOutlet weak var detailCollectionView: UICollectionView!
@@ -14,30 +16,29 @@ class ProductDetailVC: UIViewController {
     @IBOutlet weak var stockButton: UIButton!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var cardButton: UIButton!
+    
     var selectedQuantity: Int = 1
     var imageUrls: [String] = []
     var productDetails: [String: Any]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if Auth.auth().currentUser == nil {
             self.setupViewController()
-            
         }
+        // addCommentToProduct()
         if let layout = detailCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal // 📌 YATAY KAYDIRMA AKTİF
+            layout.scrollDirection = .horizontal
             layout.minimumLineSpacing = 0
         }
         detailCollectionView.showsHorizontalScrollIndicator = false
         detailCollectionView.decelerationRate = .fast
         detailCollectionView.isPagingEnabled = true
-        detailCollectionView.reloadData()
-        if let details = productDetails {
-            imageUrls = details["imageUrl"] as? [String] ?? []
-        }
-        
         detailCollectionView.dataSource = self
         detailCollectionView.delegate = self
+        
         if let details = productDetails {
+            imageUrls = details["imageUrl"] as? [String] ?? []
             titleLbl.text = details["name"] as? String ?? "Unknown Product"
             detailLbl.text = details["description"] as? String ?? "No Description Available"
             priceLabel.text = String(format: "$%.2f", details["price"] as? Double ?? 0.0)
@@ -45,32 +46,38 @@ class ProductDetailVC: UIViewController {
             let rating = details["rating"] as? Double ?? 0.0
             rateButton.setTitle("\(rating)", for: .normal)
             updateRatingButtonColor(rating: rating)
+            
             if let stockDict = details["stock"] as? [String: Int] {
                 let totalStock = stockDict.values.reduce(0, +)
-                print("Toplam stok: \(totalStock)")
                 stepperBtn.maximumValue = Double(totalStock)
-                print(totalStock)
-            } else {
-                print("Stok verisi yok veya format hatalı.")
             }
         }
     }
-    private func setupViewController() {
-        self.favoriteButton.isEnabled = false
-        self.arButton.isEnabled = false
-        self.arButton.tintColor = .gray
-        self.qtyButton.isEnabled = false
-        self.qtyButton.tintColor = .gray
-        self.cardButton.isEnabled = false
-        self.cardButton.tintColor = .gray
-        self.stepperBtn.isEnabled = false
-    }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toStockVC",
-           let stockVC = segue.destination as? StockVC {
-            stockVC.productStock = productDetails?["stock"] as? [String: Int] ?? [:] // 📌 Stok bilgilerini gönder
+    func addCommentToProduct() {
+            let db = Firestore.firestore()
+            let productId = "1"
+            let commentData: [String: Any] = [
+                "userEmail": Auth.auth().currentUser?.email ?? "unknown",
+                "rating": 5,
+                "commentText": "WOAW VERY GOOD PRODUCT MY WIFE LOVED IT I HIGHLY RECOMMEND IT!",
+                "date": Timestamp(date: Date())
+            ]
+
+            db.collection("Comments")
+              .document(productId)
+              .collection("userComments")
+              .addDocument(data: commentData)
+
         }
+    
+    private func setupViewController() {
+        favoriteButton.isEnabled = false
+        arButton.isEnabled = false
+        qtyButton.isEnabled = false
+        cardButton.isEnabled = false
+        stepperBtn.isEnabled = false
     }
+    
     private func updateRatingButtonColor(rating: Double) {
         switch rating {
         case 0.0..<1.0:
@@ -83,28 +90,44 @@ class ProductDetailVC: UIViewController {
             rateButton.tintColor = UIColor(red: 0.4, green: 0.8, blue: 0.0, alpha: 1.0) // Açık yeşil
         case 4.0...5.0:
             rateButton.tintColor = UIColor(red: 0.0, green: 0.8, blue: 0.0, alpha: 1.0) // Koyu yeşil
-            
         default:
             rateButton.backgroundColor = UIColor.lightGray // Varsayılan renk
         }
     }
     
     @IBAction func addToCardClicked(_ sender: Any) {
-        if let productId = productDetails?["productId"] as? String {
-            // 🧠 Önce belleğe ekle
-            CartManager.shared.pendingProductIds.append(productId)
+        guard let productId = productDetails?["productId"] as? String,
+              let userId = Auth.auth().currentUser?.uid else {
+            Router.makeAlert(titleInput: "Error", messageInput: "You must be logged in to add items to your cart.", viewController: self)
+            return
+        }
+        
+        let selectedQuantity = Int(stepperBtn.value)
+        let db = Firestore.firestore()
+        let cartItemRef = db.collection("Carts").document(userId).collection("items").document(productId)
+        
+        // 🔁 Önce mevcut quantity'yi al, sonra ekle
+        cartItemRef.getDocument { snapshot, error in
+            var existingQuantity = 0
             
-            let item = PendingCartItem(productId: productId, quantity: selectedQuantity)
-            CartManager.shared.pendingCartItems.append(item)
-            NotificationCenter.default.post(name: Notification.Name("ProductAddedToCart"),
-                                            object: nil,
-                                            userInfo: ["productId": productId,
-                                                       "quantity": selectedQuantity
-                                                      ])
+            if let data = snapshot?.data(), let qty = data["quantity"] as? Int {
+                existingQuantity = qty
+            }
             
-            Router.makeAlert(titleInput: "Added", messageInput: "Product Successfully Added to Cart", viewController: self)
+            let newQuantity = existingQuantity + selectedQuantity
+            
+            cartItemRef.setData([
+                "quantity": newQuantity
+            ], merge: true) { error in
+                if let error = error {
+                    print("❌ Error adding to cart: \(error.localizedDescription)")
+                } else {
+                    Router.makeAlert(titleInput: "Added", messageInput: "Product Successfully Added to Cart", viewController: self)
+                }
+            }
         }
     }
+    
     
     @IBAction func stepperClicked(_ sender: UIStepper) {
         selectedQuantity = Int(sender.value)
@@ -112,31 +135,33 @@ class ProductDetailVC: UIViewController {
     }
     
     @IBAction func stockButtonClicked(_ sender: Any) {
-        print("stockBtn Called")
-        self.performSegue(withIdentifier: "toStockVC", sender: nil)
+        performSegue(withIdentifier: "toStockVC", sender: nil)
     }
     
     @IBAction func arButtonClicked(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        // 📌 ARViewController'ı tanımla (Storyboard ID "ARViewController" olacak)
-        if let arVC = storyboard.instantiateViewController(withIdentifier: "ArVC") as? ArVC {
-            
-            // 🎯 ARVC'yi modally aç (Eğer bir Navigation Controller içindeyse push da yapılabilir)
+        if let arVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ArVC") as? ArVC {
             arVC.modalPresentationStyle = .fullScreen
-            self.present(arVC, animated: true, completion: nil)
+            present(arVC, animated: true, completion: nil)
         }
     }
+    
     @IBAction func favoriteButtonClicked(_ sender: Any) {
         Router.makeAlert(titleInput: "Favorite", messageInput: "Product Added to Favorite", viewController: self)
     }
     
-    @IBAction func pageControlValueChanged(_ sender: UIPageControl) {
-        let page = sender.currentPage
-        let indexPath = IndexPath(item: page, section: 0)
-        detailCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toStockVC",
+           let stockVC = segue.destination as? StockVC {
+            stockVC.productStock = productDetails?["stock"] as? [String: Int] ?? [:]
+        }
+        if segue.identifier == "toCommentVC",
+           let commentVC = segue.destination as? CommentVC,
+           let productId = productDetails?["productId"] as? String {
+            commentVC.productId = productId
+        }
+            
+        
     }
-    
 }
 
 extension ProductDetailVC: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -146,31 +171,8 @@ extension ProductDetailVC: UICollectionViewDelegate, UICollectionViewDataSource 
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ProductDetailCell", for: indexPath) as! ProductDetailCell
-        
-        let imageUrl = imageUrls[indexPath.row] // 📌 Doğru URL'yi al
+        let imageUrl = imageUrls[indexPath.row]
         cell.configure(imageUrl: imageUrl, currentPage: indexPath.row, totalPages: imageUrls.count)
-        
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = collectionView.bounds.width
-        let height = collectionView.bounds.height
-        return CGSize(width: width, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
-        for cell in detailCollectionView.visibleCells {
-            if let detailCell = cell as? ProductDetailCell {
-                detailCell.pageControl.numberOfPages = imageUrls.count
-                detailCell.pageControl.currentPage = Int(pageIndex)
-            }
-        }
-    }
-    
 }
