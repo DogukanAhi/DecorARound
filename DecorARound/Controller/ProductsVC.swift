@@ -8,7 +8,9 @@ class ProductsVC: UIViewController {
     private var products: [Product] = []
     private let productService = ProductService()
     private var selectedProductDict: [String: Any]?
-    
+    @IBOutlet weak var searchBar: UISearchBar!
+    private var allProducts: [Product] = []
+
     fileprivate  func prepareCellSize() {
         let width = ((screenSize.width-32)/2) * 0.9
         let height = width * 1.4
@@ -21,15 +23,24 @@ class ProductsVC: UIViewController {
         productCollectionView.dataSource = self
         productCollectionView.delegate = self
         productCollectionView.showsVerticalScrollIndicator = false
+        self.searchBar.delegate = self
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+
         self.fetchProducts()
     }
-    
+    @objc func hideKeyboard() {
+        view.endEditing(true)
+    }
+
     private func fetchProducts() {
         guard let category = category?.title else { return }
-        print("fetchProducts Called! category: \(category)")
         productService.fetchProducts { [weak self] result in
-            self?.products = result.filter { $0.category == category }
-            DispatchQueue.main.async {
+            let filtered = result.filter { $0.category == category }
+            self?.allProducts = filtered
+            self?.products = filtered
+            DispatchQueue.main.async { // GCD vs. NSOperationQueue
                 self?.productCollectionView.reloadData()
             }
         }
@@ -68,7 +79,8 @@ extension ProductsVC: UICollectionViewDelegate{
                     "imageUrl": selectedProduct.imageUrl ?? [],
                     "description": selectedProduct.description ?? "",
                     "rating": selectedProduct.rating ?? 0.0,
-                    "stock": selectedProduct.stock ?? 0
+                    "stock": selectedProduct.stock ?? 0,
+                    "productId": selectedProduct.productId ?? ""
                 ]
         if let istanbulStock = selectedProduct.stock?["Istanbul"] {
             print("İstanbul Stok: \(istanbulStock)")
@@ -85,8 +97,27 @@ extension ProductsVC: UICollectionViewDelegate{
            }
        }
 }
+
 extension ProductsVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSize
+    }
+}
+
+extension ProductsVC: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            products = allProducts
+        } else {
+            let searchChar = searchText.lowercased().prefix(1)
+            products = allProducts.filter {
+                guard let name = $0.name?.lowercased(), let firstChar = name.first else { return false }
+                return String(firstChar) == searchChar
+            }
+        }
+        productCollectionView.reloadData()
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

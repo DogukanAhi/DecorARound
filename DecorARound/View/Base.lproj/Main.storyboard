@@ -19,10 +19,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="J8e-cd-wC4">
-                                <rect key="frame" x="0.0" y="99" width="393" height="673"/>
+                                <rect key="frame" x="0.0" y="99" width="392" height="673"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aBB-oh-D62">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="223.33333333333334"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="392" height="223.33333333333334"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="223.33333333333334" id="VqV-2S-hlP"/>
@@ -35,7 +35,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CampaignCell" id="h96-OS-ZfM" customClass="CampaignCell" customModule="DecorARound" customModuleProvider="target">
-                                                <rect key="frame" x="6.666666666666667" y="0.0" width="380" height="299"/>
+                                                <rect key="frame" x="6" y="0.0" width="380" height="299"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Bie-NZ-Hcw">
                                                     <rect key="frame" x="0.0" y="0.0" width="380" height="299"/>
@@ -49,7 +49,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="qH7-AF-k2r">
-                                                            <rect key="frame" x="93" y="258.33333333333331" width="192" height="25.666666666666686"/>
+                                                            <rect key="frame" x="93" y="258.33333333333326" width="192" height="25.666666666666686"/>
                                                         </pageControl>
                                                     </subviews>
                                                     <constraints>
@@ -70,7 +70,7 @@
                                         </cells>
                                     </collectionView>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-PD-Ivt">
-                                        <rect key="frame" x="0.0" y="226.33333333333329" width="393" height="446.66666666666674"/>
+                                        <rect key="frame" x="0.0" y="226.33333333333329" width="392" height="446.66666666666674"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="fn7-Qr-9on">
                                             <size key="itemSize" width="128" height="128"/>
@@ -96,7 +96,7 @@
                                 </constraints>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="textlogo" translatesAutoresizingMaskIntoConstraints="NO" id="jIn-53-gQp">
-                                <rect key="frame" x="121" y="32" width="151" height="68"/>
+                                <rect key="frame" x="121" y="32" width="150" height="68"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="68" id="58j-nH-w5C"/>
                                     <constraint firstAttribute="width" constant="150" id="ixO-mO-unU"/>
