@@ -95,6 +95,8 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
                 print("doğru")
                 self.performSegue(withIdentifier: "toUserInfoVC", sender: nil)
             }
+        case (0, 1):
+            self.performSegue(withIdentifier: "toFavoriVC", sender: nil)
         case (0, 3):
             do {
                 try Auth.auth().signOut()

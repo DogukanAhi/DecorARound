@@ -26,6 +26,9 @@ class ProductDetailVC: UIViewController {
         if Auth.auth().currentUser == nil {
             self.setupViewController()
         }
+        
+        checkIfFavorite()
+        
         // addCommentToProduct()
         if let layout = detailCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
@@ -53,6 +56,7 @@ class ProductDetailVC: UIViewController {
             }
         }
     }
+    
     func addCommentToProduct() {
             let db = Firestore.firestore()
             let productId = "1"
@@ -146,7 +150,78 @@ class ProductDetailVC: UIViewController {
     }
     
     @IBAction func favoriteButtonClicked(_ sender: Any) {
-        Router.makeAlert(titleInput: "Favorite", messageInput: "Product Added to Favorite", viewController: self)
+        guard let productId = productDetails?["productId"] as? String,
+                          let userId = Auth.auth().currentUser?.uid else {
+                        Router.makeAlert(titleInput: "Error", messageInput: "You must be logged in to add favorites.", viewController: self)
+                        return
+                    }
+                    
+                    let db = Firestore.firestore()
+                    let userRef = db.collection("Users").document(userId)
+                    
+               
+                    userRef.getDocument { (document, error) in
+                        if let document = document, document.exists {
+                            var favorites = document.data()?["favorites"] as? [String] ?? []
+                                
+                            if !favorites.contains(productId) {
+                                favorites.append(productId)
+                                userRef.updateData(["favorites": favorites]) { error in
+                                    if let error = error {
+                                        print("❌ Error adding to favorites: \(error.localizedDescription)")
+                                    } else {
+                                        self.favoriteButton.image = UIImage(systemName: "heart.fill") // Dolu kalp
+                                        Router.makeAlert(titleInput: "Success", messageInput: "Product added to favorites.", viewController: self)
+                                    }
+                                }
+                            } else {
+                                // Ürün zaten favorilerde, kaldır
+                                favorites.removeAll { $0 == productId }
+                                userRef.updateData(["favorites": favorites]) { error in
+                                    if let error = error {
+                                        print("❌ Error removing from favorites: \(error.localizedDescription)")
+                                    } else {
+                                        self.favoriteButton.image = UIImage(systemName: "heart") // Boş kalp
+                                        Router.makeAlert(titleInput: "Removed", messageInput: "Product removed from favorites.", viewController: self)
+                                    }
+                                }
+                            }
+                        } else {
+                            userRef.setData([
+                                "favorites": [productId]
+                            ]) { error in
+                                if let error = error {
+                                    print("❌ Error creating new favorites list: \(error.localizedDescription)")
+                                } else {
+                                    self.favoriteButton.image = UIImage(systemName: "heart.fill") // Dolu kalp
+                                    Router.makeAlert(titleInput: "Success", messageInput: "Product added to favorites.", viewController: self)
+                                }
+                            }
+                        }
+                    }
+        NotificationCenter.default.post(name: NSNotification.Name("FavoritesUpdated"), object: nil)
+
+    }
+    
+    private func checkIfFavorite() {
+        guard let productId = productDetails?["productId"] as? String,
+              let userId = Auth.auth().currentUser?.uid else {
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let userRef = db.collection("Users").document(userId)
+        
+        userRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                let favorites = document.data()?["favorites"] as? [String] ?? []
+                if favorites.contains(productId) {
+                    self.favoriteButton.image = UIImage(systemName: "heart.fill") // Dolu kalp
+                } else {
+                    self.favoriteButton.image = UIImage(systemName: "heart") // Boş kalp
+                }
+            }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

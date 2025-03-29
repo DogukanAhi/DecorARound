@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ZsH-WO-kNp">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Basket-->
+        <!--CheckoutVC-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController id="Y6W-OH-hqX" customClass="CheckoutVC" customModule="DecorARound" customModuleProvider="target" sceneMemberID="viewController">
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FG6-we-IBp">
-                                <rect key="frame" x="0.0" y="59" width="393" height="483"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="492"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ZKY-nV-71h">
                                     <size key="itemSize" width="354" height="255"/>
@@ -116,8 +116,8 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2zA-gq-yV3">
-                                <rect key="frame" x="0.0" y="540" width="393" height="229"/>
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2zA-gq-yV3">
+                                <rect key="frame" x="0.0" y="594" width="393" height="175"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iPT-cT-g6C">
                                         <rect key="frame" x="32" y="30" width="176" height="21"/>
@@ -139,7 +139,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5WR-PZ-JIC">
-                                        <rect key="frame" x="100.66666666666669" y="156.66666666666663" width="192" height="34.333333333333343"/>
+                                        <rect key="frame" x="100.66666666666669" y="112.66666666666661" width="192" height="34.333333333333329"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="192" id="9mY-eO-A8f"/>
                                         </constraints>
@@ -164,7 +164,7 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" red="0.1450980392" green="0.58823529409999997" blue="0.87058823529999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="FG6-we-IBp" secondAttribute="bottom" constant="227" id="1hU-iI-8AZ"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="FG6-we-IBp" secondAttribute="bottom" constant="174" id="1hU-iI-8AZ"/>
                             <constraint firstItem="2zA-gq-yV3" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="GpG-ex-X0X"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="2zA-gq-yV3" secondAttribute="trailing" id="NHK-Rb-V4i"/>
                             <constraint firstItem="FG6-we-IBp" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="Ncd-gP-XSY"/>
@@ -174,9 +174,7 @@
                             <constraint firstItem="2zA-gq-yV3" firstAttribute="bottom" secondItem="vDu-zF-Fre" secondAttribute="bottom" id="prE-yk-OeL"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Basket" id="PfV-5Q-Y8H">
-                        <imageReference key="image" image="basket.fill" catalog="system" symbolScale="large" variableValue="1"/>
-                    </tabBarItem>
+                    <navigationItem key="navigationItem" id="dAn-k9-QVy"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="checkoutBtn" destination="5WR-PZ-JIC" id="e9S-7E-yHP"/>
@@ -185,6 +183,27 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1066.4122137404579" y="-2.1126760563380285"/>
+        </scene>
+        <!--Basket-->
+        <scene sceneID="ZuC-No-Eqw">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ZsH-WO-kNp" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Basket" id="PfV-5Q-Y8H">
+                        <imageReference key="image" image="basket.fill" catalog="system" symbolScale="large" variableValue="1"/>
+                    </tabBarItem>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="4zM-HP-R4y">
+                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="dc4-yx-uYD"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PDe-yc-ZFk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="139.69465648854961" y="-2.1126760563380285"/>
         </scene>
@@ -196,10 +215,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -7,6 +7,7 @@ class CheckoutVC: UIViewController {
     let productService = ProductService()
     var totalStocks: [String: Int] = [:]
     var quantities: [String: Int] = [:]
+    private var selectedProductDict: [String: Any]?
 
     @IBOutlet weak var totalPriceLbl: UILabel!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -160,4 +161,26 @@ extension CheckoutVC: UICollectionViewDelegate, UICollectionViewDataSource {
 
         return cell
     }
-}
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedProduct = selectedProducts[indexPath.row]
+        selectedProductDict = [
+                    "name": selectedProduct.name ?? "",
+                    "price": selectedProduct.price ?? 0.0,
+                    "imageUrl": selectedProduct.imageUrl ?? [],
+                    "description": selectedProduct.description ?? "",
+                    "rating": selectedProduct.rating ?? 0.0,
+                    "stock": selectedProduct.stock ?? 0,
+                    "productId": selectedProduct.productId ?? ""
+                ]
+        // Farklı storyboard'dan ProductDetailVC'yi instantiate etme
+                let storyboard = UIStoryboard(name: "Search", bundle: nil)
+        if let productDetailVC = storyboard.instantiateViewController(withIdentifier: "ProductDetailVC") as? ProductDetailVC {
+                // ProductDetailVC'ye verileri aktarma
+                productDetailVC.productDetails = selectedProductDict
+                self.navigationController?.pushViewController(productDetailVC, animated: true)
+            
+            }
+                            
+        }
+    }
+
