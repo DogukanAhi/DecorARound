@@ -1,6 +1,7 @@
 import UIKit
 import SceneKit
 import ARKit
+import FirebaseStorage
 
 class ArVC: UIViewController, ARSCNViewDelegate {
 
@@ -8,6 +9,8 @@ class ArVC: UIViewController, ARSCNViewDelegate {
 
     private var infoLabel: UILabel!
     private var modelAdded = false
+    var productId: String = ""
+    private var downloadedModelURL: URL?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,8 +32,28 @@ class ArVC: UIViewController, ARSCNViewDelegate {
         addInfoLabel()
         addGoBackButton()
         registerGestureRecognizers()
+        
+        downloadDAEModelFromFirebase()
     }
 
+    private func downloadDAEModelFromFirebase() {
+        let storage = Storage.storage()
+            let path = "models/\(productId).usdz"  // .usdz uzantısını kullanın
+            let modelRef = storage.reference(withPath: path)
+
+            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(productId).usdz")
+
+            modelRef.write(toFile: tempURL) { url, error in
+                if let error = error {
+                    print("Model indirme hatası: \(error.localizedDescription)")
+                    return
+                }
+
+                print("Model başarıyla indirildi: \(tempURL.path)")
+                self.downloadedModelURL = tempURL
+        }
+    }
+    
     private func addInfoLabel() {
         infoLabel = UILabel()
         infoLabel.text = "Detecting Plane..."
@@ -105,26 +128,43 @@ class ArVC: UIViewController, ARSCNViewDelegate {
     }
 
     @objc func tapped(recognizer: UITapGestureRecognizer) {
-        guard !modelAdded else { return }
-
-        guard let sceneView = recognizer.view as? ARSCNView else {
-            return
-        }
-
-        let touch = recognizer.location(in: sceneView)
-        let hitTestResults = sceneView.hitTest(touch, types: .existingPlane)
-
-        if let hitTest = hitTestResults.first {
-            let chairScene = SCNScene(named: "chair.dae")!
-            guard let chairNode = chairScene.rootNode.childNode(withName: "chair", recursively: true) else {
+        guard !modelAdded, let modelURL = downloadedModelURL else {
+                print("Model URL geçerli değil veya model daha önce eklenmiş.")
                 return
             }
 
-            chairNode.position = SCNVector3(hitTest.worldTransform.columns.3.x, hitTest.worldTransform.columns.3.y, hitTest.worldTransform.columns.3.z)
+            // Model dosyasının mevcut olup olmadığını kontrol et
+            let fileManager = FileManager.default
+            if !fileManager.fileExists(atPath: modelURL.path) {
+                print("Model dosyası mevcut değil!")
+                return
+            }
 
-            self.sceneView.scene.rootNode.addChildNode(chairNode)
-            modelAdded = true
-        }
+            // Dokunma noktasını test et
+            let touch = recognizer.location(in: sceneView)
+            let hitTestResults = sceneView.hitTest(touch, types: .existingPlane)
+
+            if let hitTest = hitTestResults.first {
+                // USDZ modelini yükle
+                let modelNode = SCNNode()
+
+                do {
+                    // USDZ dosyasını sahneye yükleyin
+                    let modelScene = try SCNScene(url: modelURL, options: nil)
+                    if let rootNode = modelScene.rootNode.childNodes.first {
+                        rootNode.position = SCNVector3(hitTest.worldTransform.columns.3.x, hitTest.worldTransform.columns.3.y, hitTest.worldTransform.columns.3.z)
+                        sceneView.scene.rootNode.addChildNode(rootNode)
+                        modelAdded = true
+                        print("Model başarıyla eklendi.")
+                    } else {
+                        print("Model sahnesi boş.")
+                    }
+                } catch {
+                    print("USDZ modelini yüklerken hata oluştu: \(error.localizedDescription)")
+                }
+            } else {
+                print("Plane bulunamadı!")
+            }
     }
 
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {

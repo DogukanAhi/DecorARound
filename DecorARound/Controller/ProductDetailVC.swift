@@ -144,6 +144,9 @@ class ProductDetailVC: UIViewController {
     
     @IBAction func arButtonClicked(_ sender: Any) {
         if let arVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ArVC") as? ArVC {
+            
+            arVC.productId = productDetails?["productId"] as? String ?? ""
+    
             arVC.modalPresentationStyle = .fullScreen
             present(arVC, animated: true, completion: nil)
         }
