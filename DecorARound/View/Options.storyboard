@@ -9,7 +9,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Options-->
+        <!--About-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController id="Y6W-OH-hqX" customClass="OptionsVC" customModule="DecorARound" customModuleProvider="target" sceneMemberID="viewController">
@@ -77,8 +77,8 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Options" id="tIa-Mr-SVt">
-                        <imageReference key="image" image="gear" catalog="system" symbolScale="medium"/>
+                    <tabBarItem key="tabBarItem" title="About" id="tIa-Mr-SVt">
+                        <imageReference key="image" image="questionmark.circle.dashed" catalog="system" symbolScale="medium"/>
                     </tabBarItem>
                     <navigationItem key="navigationItem" id="3II-Aq-FLH"/>
                 </viewController>
@@ -88,7 +88,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="gear" catalog="system" width="128" height="122"/>
+        <image name="questionmark.circle.dashed" catalog="system" width="128" height="123"/>
         <image name="textlogo" width="500" height="500"/>
         <systemColor name="linkColor">
             <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

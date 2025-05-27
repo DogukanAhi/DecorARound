@@ -30,6 +30,26 @@ class CheckoutVC: UIViewController {
             self.checkoutBtn.isEnabled = !self.selectedProducts.isEmpty
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toPaymentDetailVC",
+           let destinationVC = segue.destination as? PaymentDetailVC {
+
+            var total: Double = 0.0
+            for product in selectedProducts {
+                let productId = product.productId ?? ""
+                let price = product.price ?? 0.0
+                let quantity = quantities[productId] ?? 1
+                total += price * Double(quantity)
+            }
+
+            destinationVC.totalAmount = total
+            destinationVC.purchasedProductIDs = selectedProducts.compactMap { $0.productId }
+            destinationVC.productQuantities = quantities
+        }
+    }
+
+
 
     func loadCartItems() {
         selectedProducts.removeAll()

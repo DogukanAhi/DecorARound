@@ -22,42 +22,92 @@ class ProductDetailVC: UIViewController {
     var productDetails: [String: Any]?
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        if Auth.auth().currentUser == nil {
-            self.setupViewController()
-        }
-        
-        checkIfFavorite()
-        
-        // addCommentToProduct()
-        if let layout = detailCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
-            layout.scrollDirection = .horizontal
-            layout.minimumLineSpacing = 0
-        }
-        detailCollectionView.showsHorizontalScrollIndicator = false
-        detailCollectionView.decelerationRate = .fast
-        detailCollectionView.isPagingEnabled = true
-        detailCollectionView.dataSource = self
-        detailCollectionView.delegate = self
-        
-        if let details = productDetails {
-            imageUrls = details["imageUrl"] as? [String] ?? []
-            titleLbl.text = details["name"] as? String ?? "Unknown Product"
-            detailLbl.text = details["description"] as? String ?? "No Description Available"
-            priceLabel.text = String(format: "$%.2f", details["price"] as? Double ?? 0.0)
+            super.viewDidLoad()
+            if Auth.auth().currentUser == nil {
+                self.setupViewController()
+            }
             
-            let rating = details["rating"] as? Double ?? 0.0
-            rateButton.setTitle("\(rating)", for: .normal)
-            updateRatingButtonColor(rating: rating)
+            checkIfFavorite()
             
-            if let stockDict = details["stock"] as? [String: Int] {
-                let totalStock = stockDict.values.reduce(0, +)
-                stepperBtn.maximumValue = Double(totalStock)
+            // addCommentToProduct()
+            if let layout = detailCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+                layout.scrollDirection = .horizontal
+                layout.minimumLineSpacing = 0
+            }
+            detailCollectionView.showsHorizontalScrollIndicator = false
+            detailCollectionView.decelerationRate = .fast
+            detailCollectionView.isPagingEnabled = true
+            detailCollectionView.dataSource = self
+            detailCollectionView.delegate = self
+            
+            if let details = productDetails {
+                imageUrls = details["imageUrl"] as? [String] ?? []
+                titleLbl.text = details["name"] as? String ?? "Unknown Product"
+                detailLbl.text = details["description"] as? String ?? "No Description Available"
+                priceLabel.text = String(format: "$%.2f", details["price"] as? Double ?? 0.0)
+                
+                if let productId = details["productId"] as? String {
+                                fetchAverageRating(for: productId)
+                }
+                
+                if let stockDict = details["stock"] as? [String: Int] {
+                    let totalStock = stockDict.values.reduce(0, +)
+                    stepperBtn.maximumValue = Double(totalStock)
+                }
+                
             }
         }
-    }
+    private func fetchAverageRating(for productId: String) {
+            let db = Firestore.firestore()
+            let commentsRef = db.collection("Comments").document(productId).collection("userComments")
+
+            commentsRef.getDocuments { snapshot, error in
+                if let error = error {
+                    print("Yorumlar okunamadı: \(error.localizedDescription)")
+                    return
+                }
+
+                guard let documents = snapshot?.documents else {
+                    print("Snapshot boş veya erişilemedi.")
+                    return
+                }
+
+                print("\(documents.count) yorum bulundu.")
+
+                let ratings = documents.compactMap { doc -> Double? in
+                    let data = doc.data()
+                    print("📄 Yorum Belgesi ID: \(doc.documentID)")
+                    print("   ↳ Kullanıcı: \(data["userEmail"] as? String ?? "bilinmiyor")")
+                    print("   ↳ Yorum: \(data["commentText"] as? String ?? "-")")
+                    print("   ↳ Rating: \(data["rating"] ?? "-")")
+                    return data["rating"] as? Double
+                }
+
+                if ratings.isEmpty {
+                    print("Hiç rating değeri bulunamadı.")
+                    DispatchQueue.main.async {
+                        self.rateButton.setTitle("0.0", for: .normal)
+                        self.updateRatingButtonColor(rating: 0.0)
+                    }
+                    return
+                }
+
+                let sum = ratings.reduce(0, +)
+                let average = Double(sum) / Double(ratings.count)
+                let rounded = round(average * 10) / 10
+
+                print("Toplam Rating: \(sum)")
+                print("Ortalama Rating: \(average)")
+                print("Yuvarlanmış Rating: \(rounded)")
+
+                DispatchQueue.main.async {
+                    self.rateButton.setTitle("\(rounded)", for: .normal)
+                    self.updateRatingButtonColor(rating: rounded)
+                }
+            }
+        }
     
-    func addCommentToProduct() {
+  private func addCommentToProduct() {
             let db = Firestore.firestore()
             let productId = "1"
             let commentData: [String: Any] = [

@@ -1,3 +1,8 @@
+//
+//  ArVC.swift
+//  DecorAround
+//
+
 import UIKit
 import SceneKit
 import ARKit
@@ -8,52 +13,43 @@ class ArVC: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
 
     private var infoLabel: UILabel!
-    private var modelAdded = false
     var productId: String = ""
     private var downloadedModelURL: URL?
+    
+    private static var persistentScene: SCNScene = SCNScene()
+    
+    private var selectedNode: SCNNode?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.sceneView.autoenablesDefaultLighting = true
-
-        // Set the view's delegate
         sceneView.delegate = self
-
-        // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
+        sceneView.scene = ArVC.persistentScene
 
-        // Create a new scene
-        let scene = SCNScene()
-
-        // Set the scene to the view
-        sceneView.scene = scene
-
-        addInfoLabel()
+        //addInfoLabel()
         addGoBackButton()
         registerGestureRecognizers()
-        
-        downloadDAEModelFromFirebase()
+        downloadModelFromFirebase()
     }
 
-    private func downloadDAEModelFromFirebase() {
+    private func downloadModelFromFirebase() {
         let storage = Storage.storage()
-            let path = "models/\(productId).usdz"  // .usdz uzantısını kullanın
-            let modelRef = storage.reference(withPath: path)
+        let path = "models/\(productId).usdz"
+        let modelRef = storage.reference(withPath: path)
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(productId).usdz")
 
-            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("\(productId).usdz")
-
-            modelRef.write(toFile: tempURL) { url, error in
-                if let error = error {
-                    print("Model indirme hatası: \(error.localizedDescription)")
-                    return
-                }
-
-                print("Model başarıyla indirildi: \(tempURL.path)")
-                self.downloadedModelURL = tempURL
+        modelRef.write(toFile: tempURL) { url, error in
+            if let error = error {
+                print("Model indirme hatası: \(error.localizedDescription)")
+                return
+            }
+            print("Model başarıyla indirildi: \(tempURL.path)")
+            self.downloadedModelURL = tempURL
         }
     }
-    
+
     private func addInfoLabel() {
         infoLabel = UILabel()
         infoLabel.text = "Detecting Plane..."
@@ -100,96 +96,159 @@ class ArVC: UIViewController, ARSCNViewDelegate {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
         self.sceneView.addGestureRecognizer(tapGestureRecognizer)
 
-        let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
-        self.sceneView.addGestureRecognizer(pinchGestureRecognizer)
+        let rotationGestureRecognizer = UIRotationGestureRecognizer(target: self, action: #selector(rotated))
+            sceneView.addGestureRecognizer(rotationGestureRecognizer)
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pannedToMove))
+        panGestureRecognizer.maximumNumberOfTouches = 1
+        self.sceneView.addGestureRecognizer(panGestureRecognizer)
     }
 
-    @objc func pinched(recognizer: UIPinchGestureRecognizer) {
-        if recognizer.state == .changed {
-            guard let sceneView = recognizer.view as? ARSCNView else {
-                return
+    @objc func pannedToMove(recognizer: UIPanGestureRecognizer) {
+        let location = recognizer.location(in: sceneView)
+
+        switch recognizer.state {
+        case .began:
+            let hitResults = sceneView.hitTest(location, options: nil)
+            if let hit = hitResults.first,
+               hit.node.name?.starts(with: "product_") == true || hit.node.parent?.name?.starts(with: "product_") == true {
+                selectedNode = hit.node.name?.starts(with: "product_") == true ? hit.node : hit.node.parent
             }
 
-            let touch = recognizer.location(in: sceneView)
-            let hitTestResults = self.sceneView.hitTest(touch, options: nil)
-
-            if let hitTest = hitTestResults.first {
-                let chairNode = hitTest.node
-
-                let pinchScaleX = Float(recognizer.scale) * chairNode.scale.x
-                let pinchScaleY = Float(recognizer.scale) * chairNode.scale.y
-                let pinchScaleZ = Float(recognizer.scale) * chairNode.scale.z
-
-                chairNode.scale = SCNVector3(pinchScaleX, pinchScaleY, pinchScaleZ)
-
-                recognizer.scale = 1
+        case .changed:
+            guard let node = selectedNode else { return }
+            let planeResults = sceneView.hitTest(location, types: .existingPlane)
+            if let result = planeResults.first {
+                let currentY = node.position.y // Y eksenini sabit tut (model zıplamasın)
+                node.position = SCNVector3(
+                    result.worldTransform.columns.3.x,
+                    currentY,
+                    result.worldTransform.columns.3.z
+                )
             }
+
+        case .ended, .cancelled:
+            selectedNode = nil
+
+        default:
+            break
         }
     }
 
+
+    @objc func rotated(recognizer: UIRotationGestureRecognizer) {
+        let location = recognizer.location(in: sceneView)
+
+        switch recognizer.state {
+        case .began:
+            let hitResults = sceneView.hitTest(location, options: nil)
+            if let hit = hitResults.first,
+               hit.node.name?.starts(with: "product_") == true || hit.node.parent?.name?.starts(with: "product_") == true {
+                selectedNode = hit.node.name?.starts(with: "product_") == true ? hit.node : hit.node.parent
+            }
+
+        case .changed:
+            guard let node = selectedNode else { return }
+            node.eulerAngles.y -= Float(recognizer.rotation)
+            recognizer.rotation = 0
+
+        case .ended, .cancelled:
+            selectedNode = nil
+
+        default:
+            break
+        }
+    }
+
+
+    
+
     @objc func tapped(recognizer: UITapGestureRecognizer) {
-        guard !modelAdded, let modelURL = downloadedModelURL else {
-                print("Model URL geçerli değil veya model daha önce eklenmiş.")
+        let touch = recognizer.location(in: sceneView)
+            let hitTestResults = sceneView.hitTest(touch, options: nil)
+
+            if let hitNode = hitTestResults.first?.node,
+               let name = hitNode.name,
+               name.hasPrefix("delete_") {
+                hitNode.parent?.removeFromParentNode()
+                print("Model silindi: \(name)")
                 return
             }
 
-            // Model dosyasının mevcut olup olmadığını kontrol et
-            let fileManager = FileManager.default
-            if !fileManager.fileExists(atPath: modelURL.path) {
-                print("Model dosyası mevcut değil!")
+            // ✅ BURASI: Model daha önce eklendi mi?
+            if sceneView.scene.rootNode.childNodes.contains(where: { $0.name == "product_\(productId)" }) {
+                print("Bu model zaten sahnede.")
                 return
             }
 
-            // Dokunma noktasını test et
-            let touch = recognizer.location(in: sceneView)
-            let hitTestResults = sceneView.hitTest(touch, types: .existingPlane)
+            guard let modelURL = downloadedModelURL else {
+                print("Model URL geçerli değil.")
+                return
+            }
 
-            if let hitTest = hitTestResults.first {
-                // USDZ modelini yükle
-                let modelNode = SCNNode()
+        let planeHit = sceneView.hitTest(touch, types: .existingPlane)
+        if let hit = planeHit.first {
+            do {
+                let modelScene = try SCNScene(url: modelURL, options: nil)
+                let wrapperNode = modelScene.rootNode.flattenedClone()
 
-                do {
-                    // USDZ dosyasını sahneye yükleyin
-                    let modelScene = try SCNScene(url: modelURL, options: nil)
-                    if let rootNode = modelScene.rootNode.childNodes.first {
-                        rootNode.position = SCNVector3(hitTest.worldTransform.columns.3.x, hitTest.worldTransform.columns.3.y, hitTest.worldTransform.columns.3.z)
-                        sceneView.scene.rootNode.addChildNode(rootNode)
-                        modelAdded = true
-                        print("Model başarıyla eklendi.")
-                    } else {
-                        print("Model sahnesi boş.")
-                    }
-                } catch {
-                    print("USDZ modelini yüklerken hata oluştu: \(error.localizedDescription)")
+                for child in modelScene.rootNode.childNodes {
+                    wrapperNode.addChildNode(child)
                 }
-            } else {
-                print("Plane bulunamadı!")
+
+                wrapperNode.position = SCNVector3(
+                    hit.worldTransform.columns.3.x,
+                    hit.worldTransform.columns.3.y,
+                    hit.worldTransform.columns.3.z
+                )
+                wrapperNode.name = "product_\(productId)"
+
+                let deleteText = SCNText(string: "✕", extrusionDepth: 0.01)
+                deleteText.font = UIFont.boldSystemFont(ofSize: 2.0)
+                deleteText.firstMaterial?.diffuse.contents = UIColor.red
+                deleteText.firstMaterial?.emission.contents = UIColor.red
+                deleteText.firstMaterial?.isDoubleSided = true
+
+                let deleteNode = SCNNode(geometry: deleteText)
+                deleteNode.scale = SCNVector3(0.03, 0.03, 0.03)
+                deleteNode.position = SCNVector3(0, 0.8, 0) // modelin biraz üstünde
+                deleteNode.eulerAngles.x = -.pi / 2         // yukarıya bakması için düzleme yatırılıyor
+                deleteNode.name = "delete_\(UUID().uuidString)"
+                
+                let constraint = SCNBillboardConstraint()
+                constraint.freeAxes = .Y
+                deleteNode.constraints = [constraint]
+
+                wrapperNode.addChildNode(deleteNode)
+
+                sceneView.scene.rootNode.addChildNode(wrapperNode)
+                print("Model eklendi: \(productId)")
+            } catch {
+                print("Model yükleme hatası: \(error.localizedDescription)")
             }
+        } else {
+            print("Plane bulunamadı")
+        }
     }
 
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         if anchor is ARPlaneAnchor {
             DispatchQueue.main.async {
-                self.infoLabel.text = "Plane Detected"
+                //self.infoLabel.text = "Plane Detected"
+                print("Yüzey algılandı")
             }
         }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
-
-        // Run the view's session
         sceneView.session.run(configuration)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-
-        // Pause the view's session
         sceneView.session.pause()
     }
 }

@@ -107,6 +107,8 @@ extension ProfileVC: UITableViewDelegate, UITableViewDataSource {
             } catch let signOutError as NSError {
                 print("Error signing out: \(signOutError)")
             }
+        case (0,2):
+            self.performSegue(withIdentifier: "toPastOrdersVC", sender: nil)
         default:
             break
         }
