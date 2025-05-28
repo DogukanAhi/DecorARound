@@ -23,10 +23,13 @@ class PastOrdersVC: UIViewController {
         pastOrdersTableView.estimatedRowHeight = 120
         pastOrdersTableView.rowHeight = UITableView.automaticDimension
         pastOrdersTableView.showsVerticalScrollIndicator = false
-
-        fetchPastOrders()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchPastOrders()
+    }
+    
     func fetchPastOrders() {
         guard let userId = Auth.auth().currentUser?.uid else { return }
 

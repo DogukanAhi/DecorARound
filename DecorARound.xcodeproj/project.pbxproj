@@ -353,10 +353,11 @@
 				CODE_SIGN_ENTITLEMENTS = DecorARound/DecorARound.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P9PZMA597G;
+				DEVELOPMENT_TEAM = 7MVV4KY9UM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DecorARound/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Konumunuza erişmek istiyoruz";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -386,10 +387,11 @@
 				CODE_SIGN_ENTITLEMENTS = DecorARound/DecorARound.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = P9PZMA597G;
+				DEVELOPMENT_TEAM = 7MVV4KY9UM;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DecorARound/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Konumunuza erişmek istiyoruz";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

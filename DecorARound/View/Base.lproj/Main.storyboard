@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="T6A-f7-h4n">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="T6A-f7-h4n">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -14,15 +14,15 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="DecorARound" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="J8e-cd-wC4">
-                                <rect key="frame" x="0.0" y="143" width="392" height="629"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="J8e-cd-wC4">
+                                <rect key="frame" x="0.0" y="143" width="393" height="629"/>
                                 <subviews>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="aBB-oh-D62">
-                                        <rect key="frame" x="0.0" y="0.0" width="392" height="223.33333333333334"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="223.33333333333334"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="223.33333333333334" id="VqV-2S-hlP"/>
@@ -35,7 +35,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CampaignCell" id="h96-OS-ZfM" customClass="CampaignCell" customModule="DecorARound" customModuleProvider="target">
-                                                <rect key="frame" x="6" y="0.0" width="380" height="299"/>
+                                                <rect key="frame" x="6.666666666666667" y="0.0" width="380" height="299"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Bie-NZ-Hcw">
                                                     <rect key="frame" x="0.0" y="0.0" width="380" height="299"/>
@@ -69,8 +69,8 @@
                                             </collectionViewCell>
                                         </cells>
                                     </collectionView>
-                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-PD-Ivt">
-                                        <rect key="frame" x="0.0" y="226.33333333333329" width="392" height="402.66666666666674"/>
+                                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="e2Q-PD-Ivt">
+                                        <rect key="frame" x="0.0" y="226.33333333333329" width="393" height="402.66666666666674"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="402.66666666666674" id="MHT-33-A7B"/>
@@ -83,7 +83,7 @@
                                         </collectionViewFlowLayout>
                                         <cells>
                                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BestSellerCell" id="z7G-BI-4b9" customClass="BestSellerCell" customModule="DecorARound" customModuleProvider="target">
-                                                <rect key="frame" x="91.666666666666671" y="0.0" width="209" height="222"/>
+                                                <rect key="frame" x="92" y="0.0" width="209" height="222"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="7yd-jw-LhQ">
                                                     <rect key="frame" x="0.0" y="0.0" width="209" height="222"/>
@@ -124,12 +124,8 @@
                                     <constraint firstItem="e2Q-PD-Ivt" firstAttribute="leading" secondItem="aBB-oh-D62" secondAttribute="leading" id="OOt-IZ-gfE"/>
                                 </constraints>
                             </stackView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="textlogo" translatesAutoresizingMaskIntoConstraints="NO" id="jIn-53-gQp">
-                                <rect key="frame" x="121" y="32" width="150" height="68"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="68" id="58j-nH-w5C"/>
-                                    <constraint firstAttribute="width" constant="150" id="ixO-mO-unU"/>
-                                </constraints>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="textlogo" translatesAutoresizingMaskIntoConstraints="NO" id="jIn-53-gQp">
+                                <rect key="frame" x="122" y="64" width="148" height="79"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -137,13 +133,13 @@
                         <color key="tintColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="J8e-cd-wC4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="6RC-Hh-fZd"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="jIn-53-gQp" secondAttribute="bottom" constant="669" id="9Dd-av-gbK"/>
+                            <constraint firstItem="jIn-53-gQp" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="-39" id="LTY-lP-EpV"/>
                             <constraint firstItem="J8e-cd-wC4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="MeX-8c-RxL"/>
-                            <constraint firstItem="jIn-53-gQp" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="-27" id="RpC-1b-KcW"/>
                             <constraint firstAttribute="bottomMargin" secondItem="J8e-cd-wC4" secondAttribute="bottom" constant="-3" id="X7d-Fn-Kyo"/>
-                            <constraint firstItem="J8e-cd-wC4" firstAttribute="centerX" secondItem="jIn-53-gQp" secondAttribute="centerX" id="arF-tc-63o"/>
-                            <constraint firstItem="jIn-53-gQp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="121" id="wrx-KS-6Qw"/>
+                            <constraint firstItem="J8e-cd-wC4" firstAttribute="top" secondItem="jIn-53-gQp" secondAttribute="bottom" id="bz2-bN-fti"/>
+                            <constraint firstItem="jIn-53-gQp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="122" id="vta-ne-PMz"/>
                             <constraint firstItem="J8e-cd-wC4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ztH-dQ-YDD"/>
+                            <constraint firstItem="jIn-53-gQp" firstAttribute="centerX" secondItem="J8e-cd-wC4" secondAttribute="centerX" id="zvJ-uc-nIr"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="NNg-S1-X1J"/>

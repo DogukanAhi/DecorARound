@@ -1,16 +1,24 @@
 import UIKit
 import MapKit
-class StockVC: UIViewController, MKMapViewDelegate {
-    
+import CoreLocation
+
+class StockVC: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
+
     @IBOutlet weak var mapView: MKMapView!
+    
     private let fetchService = FetchCoordinatesService()
+    private let locationManager = CLLocationManager()
     var productStock: [String: Int] = [:]
+
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.delegate = self
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
         fetchStockAndAddAnnotations()
     }
-    
+
     private func fetchStockAndAddAnnotations() {
         fetchService.fetchStockCoordinates(stock: productStock) { [weak self] stockData in
             DispatchQueue.main.async {
@@ -19,27 +27,43 @@ class StockVC: UIViewController, MKMapViewDelegate {
                     print("Stok bilgisi bulunamadı.")
                     return
                 }
+
                 var allStocksAreZero = true
+
                 for stockInfo in stockData {
-                    
                     if stockInfo.stock > 0 {
                         allStocksAreZero = false
-                    }
-                    if stockInfo.stock > 0 {
+
                         let annotation = MKPointAnnotation()
                         annotation.title = "\(stockInfo.city): \(stockInfo.stock) Pieces"
                         annotation.coordinate = CLLocationCoordinate2D(latitude: stockInfo.latitude, longitude: stockInfo.longitude)
                         self.mapView.addAnnotation(annotation)
                     }
                 }
+
                 if allStocksAreZero {
                     Router.makeAlert(titleInput: "Sorry :(", messageInput: "All stocks are empty.", viewController: self)
-                } else {
-                    let center = CLLocationCoordinate2D(latitude: 39.9334, longitude: 32.8597)
-                    let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 15.0, longitudeDelta: 15.0))
-                    self.mapView.setRegion(region, animated: true)
                 }
+                // Konum kullanıcıdan alındığı için burada ekstra merkez ayarı yapmaya gerek yok
             }
         }
+    }
+
+    // MARK: - CLLocationManagerDelegate
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let userLocation = locations.last else { return }
+
+        let region = MKCoordinateRegion(
+            center: userLocation.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.8, longitudeDelta: 0.8)
+        )
+        mapView.setRegion(region, animated: true)
+
+        // Konum bir kez alındıktan sonra güncellemeyi durdur
+        locationManager.stopUpdatingLocation()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Konum alınamadı: \(error.localizedDescription)")
     }
 }

@@ -205,23 +205,6 @@ class PaymentDetailVC: UIViewController, UITextFieldDelegate {
                         print("✅ Product updated: \(productId)")
                     }
                 }
-
-                // Kullanıcının sold alanı güncelle
-                let soldFieldPath = "sold.\(productId)"
-                let update: [String: Any] = [
-                    soldFieldPath: [
-                        "quantity": FieldValue.increment(Int64(quantity)),
-                        "lastPurchased": FieldValue.serverTimestamp()
-                    ]
-                ]
-
-                userRef.setData(update, merge: true) { error in
-                    if let error = error {
-                        print("❌ User sold update failed: \(error.localizedDescription)")
-                    } else {
-                        print("✅ User sold field updated: \(productId)")
-                    }
-                }
             }
         }
     }

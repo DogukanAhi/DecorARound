@@ -39,14 +39,7 @@ class ProfileVC: UIViewController {
             target: self,
             action: nil
         )
-        let rightButton = UIBarButtonItem(
-            image: UIImage(systemName: "bell.fill"),
-            style: .plain,
-            target: self,
-            action: nil
-        )
         navigationItem.leftBarButtonItem = leftButton
-        navigationItem.rightBarButtonItem = rightButton
         navigationBar.items = [navigationItem]
     }
     
